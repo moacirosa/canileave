@@ -1,0 +1,27 @@
+{
+  "name": "canileave",
+  "version": "1.0.0",
+  "description": "Yet another dummy terminal application for work tracking",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moacirosa/canileave.git"
+  },
+  "keywords": [
+    "tracking",
+    "terminal",
+    "leave"
+  ],
+  "author": "Moacir Rosa <paulomoacir.junior@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moacirosa/canileave/issues"
+  },
+  "homepage": "https://github.com/moacirosa/canileave#readme",
+  "dependencies": {
+    "blessed": "^0.1.80"
+  }
+}
