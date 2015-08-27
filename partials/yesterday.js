@@ -1,18 +1,18 @@
-var todayBoxBuilder = {
+var boxBuilder = {
 
   build: function (blessed) {
 
-    var todayBox = blessed.box({
-      top: 4,
+    var box = blessed.box({
+      top: 18,
       left: 'left+1',
       width: '40%',
       height: 'shrink',
       //border: 'line'
     });
 
-    var labelToday = blessed.box({
-      parent: todayBox,
-      content: 'TODAY',
+    var label = blessed.box({
+      parent: box,
+      content: 'YESTERDAY',
       height: 1,
       left: 1,
       style: {
@@ -32,7 +32,7 @@ var todayBoxBuilder = {
     ];
 
     var table = blessed.listtable({
-      parent: todayBox,
+      parent: box,
       top: 'top+1',
       left: 'left',
       width: '95%',
@@ -69,9 +69,9 @@ var todayBoxBuilder = {
         }
     });
 
-    var sumToday = blessed.box({
-      parent: todayBox,
-      content: '{green-fg}{bold}05:23{/bold}{/green-fg} hours worked today',
+    var sumText = blessed.box({
+      parent: box,
+      content: '{green-fg}{bold}05:23{/bold}{/green-fg} hours worked yesterday',
       height: 1,
       left: 1,
       bottom: -1,
@@ -79,8 +79,8 @@ var todayBoxBuilder = {
       tags: true
     });
 
-    return todayBox;
+    return box;
   }
 };
 
-module.exports = todayBoxBuilder;
+module.exports = boxBuilder;
