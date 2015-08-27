@@ -1,6 +1,6 @@
 var headerBoxBuilder = {
 
-  build: function (blessed) {
+  build: function (blessed, screen) {
 
     var headerBox = blessed.box({
       top: 0,
@@ -27,12 +27,23 @@ var headerBoxBuilder = {
       width: 'shrink'
     });
 
+    var initialDateTime = new Date();
+
     var currentDateBox = blessed.box({
       parent: headerBox,
       top: 1,
       right: 2,
-      content: 'Wed Aug 26 2015 18:19:24 GMT-0300 (BRT)',
+      content: initialDateTime.toString(),
       width: 'shrink'
+    });
+
+    screen.on('updateDateTime', function (event){
+
+      var now = new Date();
+
+      currentDateBox.setContent(now.toString());
+
+      screen.render();
     });
 
     var bottomRuller = blessed.line({
