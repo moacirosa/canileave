@@ -102,6 +102,22 @@ var io = [
 	{
 		input: new Date('2015-08-21 13:53'),
 		output: new Date('2015-08-21 18:18')
+	},
+	{
+		input: new Date('2015-08-27 08:35'),
+		output: new Date('2015-08-27 13:33')
+	},
+	{
+		input: new Date('2015-08-27 14:17'),
+		output: new Date('2015-08-27 17:51')
+	},
+	{
+		input: new Date('2015-08-28 09:02'),
+		output: new Date('2015-08-28 12:33')
+	},
+	{
+		input: new Date('2015-08-28 13:48'),
+		output: null
 	}
 ];
 
