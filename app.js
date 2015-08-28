@@ -1,8 +1,8 @@
 var blessed = require('blessed');
-var header = require('./partials/header');
-var today = require('./partials/today');
-var yesterday = require('./partials/yesterday');
-var week = require('./partials/week');
+var header = require('./libs/partials/header');
+var today = require('./libs/partials/today');
+var yesterday = require('./libs/partials/yesterday');
+var week = require('./libs/partials/week');
 
 var screen = blessed.screen({
   smartCSR: true
@@ -15,7 +15,7 @@ screen.append(today.build(blessed, screen));
 screen.append(yesterday.build(blessed, screen));
 screen.append(week.build(blessed, screen));
 
-screen.key(['escape'], function (ch, key){
+screen.key(['escape', 'q'], function (ch, key){
   return process.exit(0);
 });
 
