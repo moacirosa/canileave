@@ -24,5 +24,8 @@
   "dependencies": {
     "blessed": "^0.1.80",
     "moment": "^2.10.6"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.0"
   }
 }
