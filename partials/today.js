@@ -1,3 +1,6 @@
+var leave = require('../leave');
+var hits = require('../hits');
+
 var todayBoxBuilder = {
 
   build: function (blessed) {
@@ -21,15 +24,10 @@ var todayBoxBuilder = {
       width: 'shrink'
     });
 
-    var content = [
-      ['Input', 'Output', 'Duration', 'Interval'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['13:00', '18:02', '05:02', '00:59'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['13:00', '18:02', '05:02', '00:59'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['lorem', 'ipsum', 'dolor', 'gutchen']
-    ];
+    var today = new Date();
+    var todayHits = leave.collectHits(hits, today);
+
+    var content = leave.parseHits(todayHits);
 
     var table = blessed.listtable({
       parent: todayBox,
@@ -71,7 +69,7 @@ var todayBoxBuilder = {
 
     var sumToday = blessed.box({
       parent: todayBox,
-      content: '{green-fg}{bold}05:23{/bold}{/green-fg} hours worked today',
+      content: '{green-fg}{bold}00:00{/bold}{/green-fg} hours worked today',
       height: 1,
       left: 1,
       bottom: -1,

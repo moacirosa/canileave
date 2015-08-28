@@ -1,9 +1,9 @@
 var util = require('util');
 var hits = require('./hits');
 var moment = require('moment');
+var duration = require('moment-duration-format');
 
 /*
-
 
 var content = [
       ['Input', 'Output', 'Duration', 'Interval'],
@@ -14,45 +14,58 @@ var content = [
       ['08:30', '12:01', '03:31', '-'],
       ['lorem', 'ipsum', 'dolor', 'gutchen']
     ];
-
-
 */
 
+var leave = {
 
-function collectHits(hits, matchDay) {
+	collectHits: function (hits, matchDay) {
 
-	var filteredHits = [];
+		var filteredHits = [];
 
-	hits.forEach(function (hit){
+		hits.forEach(function (hit){
 
-		var isSame = moment(hit.input).isSame(matchDay, 'day');
+			var isSame = moment(hit.input).isSame(matchDay, 'day');
 
-		if (isSame) {
-			filteredHits.push(hit);
-		}
-	});
+			if (isSame) {
+				filteredHits.push(hit);
+			}
+		});
 
-	return filteredHits
-}
+		return filteredHits;
+	},
 
-function parseHits(hits) {
+	parseHits: function (hits) {
 
-	var flatHits = [
-		['Input', 'Output', 'Duration', 'Interval']
-	];
-
-	hits.forEach(function (hit){
-
-		var component = [
-			moment(hit.input).format('hh:mm:ss'),
-			moment(hit.output).format('hh:mm:ss')
+		var flatHits = [
+			['Input', 'Output', 'Duration', 'Interval']
 		];
 
+		hits.forEach(function (hit){
 
-		component.push()
-	});
-}
+			var input = moment(hit.input),
+				output = moment(hit.output);
 
-var filtered = collectHits(hits, new Date('Thu Aug 20 2015 00:00:00 GMT-0300 (BRT)'));
+			var outputReferer = output.isValid() ? output : moment();
 
-console.log(filtered);
+			var diff = outputReferer.diff(input, 'minutes');
+
+			var duration = moment.duration(diff, 'minutes')
+								 .format('HH:mm', { trim: false });
+			
+			var interval = '-';
+
+			var component = [
+				input.format('HH:mm'),
+				output.isValid() ? output.format('HH:mm') : '-',
+				duration,
+				interval
+			];
+
+			flatHits.push(component);
+		});
+
+		return flatHits;
+	}
+};
+
+module.exports = leave;
