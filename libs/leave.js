@@ -65,6 +65,28 @@ var leave = {
 		});
 
 		return flatHits;
+	},
+
+	sumHitsDuration: function (flatHits) {
+
+		var content = [
+	      ['Input', 'Output', 'Duration', 'Interval'],
+	      ['08:30', '12:01', '03:31', '-'],
+	      ['13:00', '18:02', '05:02', '00:59'],
+	      ['08:30', '12:01', '03:31', '-'],
+	      ['13:00', '18:02', '05:02', '00:59'],
+	      ['08:30', '12:01', '03:31', '-'],
+	      ['lorem', 'ipsum', 'dolor', 'gutchen']
+	    ];
+
+		var sumDuration = 0;
+
+		/*
+		flatHits.forEach(funtion (flatHit){
+
+
+		});
+		*/
 	}
 };
 

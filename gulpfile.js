@@ -7,11 +7,11 @@ var applicationProcess = null;
  * var watchPaths = ['render.js'];
 */
 
-var watchPaths = ['leave.js'];
-var childFork = 'leave.js';
+var watchPaths = ['tests/*.js'];
+var childFork = 'render.js';
 
 gulp.task('run', function (){
-  applicationProcess = childProcess.fork(childFork);
+  applicationProcess = childProcess.fork(watchPaths);
 });
 
 gulp.task('kill', function (){

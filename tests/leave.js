@@ -1,0 +1,2 @@
+var leave = require('../leave');
+
