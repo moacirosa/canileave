@@ -2,92 +2,71 @@ var util = require('util');
 var hits = require('./hits');
 var moment = require('moment');
 var duration = require('moment-duration-format');
-
-/*
-
-var content = [
-      ['Input', 'Output', 'Duration', 'Interval'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['13:00', '18:02', '05:02', '00:59'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['13:00', '18:02', '05:02', '00:59'],
-      ['08:30', '12:01', '03:31', '-'],
-      ['lorem', 'ipsum', 'dolor', 'gutchen']
-    ];
-*/
+var _ = require('lodash');
 
 var leave = {
 
-	collectHits: function (hits, matchDay) {
+  collectHits: function (hits, matchDay) {
 
-		var filteredHits = [];
+    var filteredHits = [];
 
-		hits.forEach(function (hit){
+    hits.forEach(function (hit){
 
-			var isSame = moment(hit.input).isSame(matchDay, 'day');
+      var isSame = moment(hit.input).isSame(matchDay, 'day');
 
-			if (isSame) {
-				filteredHits.push(hit);
-			}
-		});
+      if (isSame) {
+        filteredHits.push(hit);
+      }
+    });
 
-		return filteredHits;
-	},
+    return filteredHits;
+  },
 
-	parseHits: function (hits) {
+  parseHits: function (hits) {
 
-		var flatHits = [
-			['Input', 'Output', 'Duration', 'Interval']
-		];
+    var flatHits = [
+      ['Input', 'Output', 'Duration', 'Interval']
+    ];
 
-		hits.forEach(function (hit){
+    hits.forEach(function (hit){
 
-			var input = moment(hit.input),
-				output = moment(hit.output);
+      var input = moment(hit.input),
+        output = moment(hit.output);
 
-			var outputReferer = output.isValid() ? output : moment();
+      var outputReferer = output.isValid() ? output : moment();
 
-			var diff = outputReferer.diff(input, 'minutes');
+      var duration = outputReferer.diff(input, 'minutes');
+      
+      var interval = '-';
 
-			var duration = moment.duration(diff, 'minutes')
-								 .format('HH:mm', { trim: false });
-			
-			var interval = '-';
+      var component = [
+        input.format('HH:mm'),
+        output.isValid() ? output.format('HH:mm') : '-',
+        duration,
+        interval
+      ];
 
-			var component = [
-				input.format('HH:mm'),
-				output.isValid() ? output.format('HH:mm') : '-',
-				duration,
-				interval
-			];
+      flatHits.push(component);
+    });
 
-			flatHits.push(component);
-		});
+    return flatHits;
+  },
 
-		return flatHits;
-	},
+  /**
+   * @todo Add option to avoid headers
+   */
+  sumHitsDuration: function (flatHits) {
 
-	sumHitsDuration: function (flatHits) {
+    var durations = _.pluck(flatHits, 2);
 
-		var content = [
-	      ['Input', 'Output', 'Duration', 'Interval'],
-	      ['08:30', '12:01', '03:31', '-'],
-	      ['13:00', '18:02', '05:02', '00:59'],
-	      ['08:30', '12:01', '03:31', '-'],
-	      ['13:00', '18:02', '05:02', '00:59'],
-	      ['08:30', '12:01', '03:31', '-'],
-	      ['lorem', 'ipsum', 'dolor', 'gutchen']
-	    ];
+    return _.sum(durations);
+  },
 
-		var sumDuration = 0;
+  formatDuration: function (minutes) {
 
-		/*
-		flatHits.forEach(funtion (flatHit){
-
-
-		});
-		*/
-	}
+    return moment.duration(minutes, 'minutes')
+      .format('HH:mm', { trim: false });
+  }
 };
 
 module.exports = leave;

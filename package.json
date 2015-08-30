@@ -1,6 +1,6 @@
 {
   "name": "canileave",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Yet another dummy terminal application for work tracking",
   "main": "app.js",
   "scripts": {
@@ -23,10 +23,12 @@
   "homepage": "https://github.com/moacirosa/canileave#readme",
   "dependencies": {
     "blessed": "^0.1.80",
+    "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "moment-duration-format": "^1.3.0"
   },
   "devDependencies": {
-    "gulp": "~3.8.0"
+    "gulp": "~3.8.0",
+    "mocha": "^2.2.5"
   }
 }
