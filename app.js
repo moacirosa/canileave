@@ -1,8 +1,9 @@
 var blessed = require('blessed');
-var header = require('./libs/partials/header');
-var today = require('./libs/partials/today');
-var yesterday = require('./libs/partials/yesterday');
-var week = require('./libs/partials/week');
+var moment = require('moment');
+var header = require('./libs/widget/header');
+// var week = require('./libs/partials/week');
+
+var day = require('./libs/widget/day');
 
 var screen = blessed.screen({
   smartCSR: true
@@ -11,9 +12,17 @@ var screen = blessed.screen({
 screen.title = 'Can I Leave?';
 
 screen.append(header.build(blessed, screen));
-screen.append(today.build(blessed, screen));
-screen.append(yesterday.build(blessed, screen));
-screen.append(week.build(blessed, screen));
+
+var today = moment('2015-08-28 00:00:00'); // not REALLY today here yet
+var yesterday = today.clone().subtract(1, 'day');
+
+screen.append(day.build(today, 4));
+screen.append(day.build(yesterday, 18));
+
+/**
+ * Comment week section til I really have an implementation
+ * screen.append(week.build(blessed, screen));
+ */
 
 screen.key(['escape', 'q'], function (ch, key){
   return process.exit(0);

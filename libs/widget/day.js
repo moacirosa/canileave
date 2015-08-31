@@ -1,21 +1,36 @@
+var blessed = require('blessed');
+var moment = require('moment');
 var leave = require('../leave');
 var hits = require('../hits');
 
-var todayBoxBuilder = {
+var dayBoxBuilder = {
 
-  build: function (blessed) {
+  build: function (day, boxTop) {
 
-    var todayBox = blessed.box({
-      top: 4,
+    var referenceDay = moment(day);
+    var today = moment();
+    var yesterday = moment().subtract(1, 'day');
+
+    var dayBox = blessed.box({
+      top: boxTop,
       left: 'left+1',
       width: '40%',
-      height: 'shrink',
-      //border: 'line'
+      height: 'shrink'
     });
 
-    var labelToday = blessed.box({
-      parent: todayBox,
-      content: 'TODAY',
+    var labelText = referenceDay.toNow(false);
+
+    if (referenceDay.isSame(today, 'day')) {
+      labelText = labelBox.setContent('TODAY');
+    }
+
+    if (referenceDay.isSame(yesterday, 'day')) {
+      labelText = labelBox.setContent('YESTERDAY');
+    }
+
+    var labelBox = blessed.box({
+      parent: dayBox,
+      content: labelText,
       height: 1,
       left: 1,
       style: {
@@ -24,13 +39,11 @@ var todayBoxBuilder = {
       width: 'shrink'
     });
 
-    var today = new Date();
-    var todayHits = leave.collectHits(hits, today);
-
-    var content = leave.parseHits(todayHits);
+    var hitsInDay = leave.collectHits(hits, referenceDay);
+    var content = leave.parseHits(hitsInDay);
 
     var table = blessed.listtable({
-      parent: todayBox,
+      parent: dayBox,
       top: 'top+1',
       left: 'left',
       width: '95%',
@@ -55,20 +68,21 @@ var todayBoxBuilder = {
         cell: {
           fg: 'magenta',
           selected: {
+            fg: 'white',
             bg: 'blue'
           }
         }
       },
-      data: content,
-      alwaysScroll: true,
-        scrollbar: {
-          ch: ' ',
-          inverse: true
-        }
+      alwaysScroll: false,
+      scrollbar: {
+        ch: ' ',
+        inverse: true
+      },
+      data: content
     });
 
     var sumToday = blessed.box({
-      parent: todayBox,
+      parent: dayBox,
       content: '{green-fg}{bold}00:00{/bold}{/green-fg} hours worked today',
       height: 1,
       left: 1,
@@ -77,8 +91,8 @@ var todayBoxBuilder = {
       tags: true
     });
 
-    return todayBox;
+    return dayBox;
   }
 };
 
-module.exports = todayBoxBuilder;
+module.exports = dayBoxBuilder;
