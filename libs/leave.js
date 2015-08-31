@@ -35,14 +35,14 @@ var leave = {
 
       var outputReferer = output.isValid() ? output : moment();
 
-      var duration = outputReferer.diff(input, 'minutes');
+      var diff = outputReferer.diff(input, 'minutes');
       
       var interval = '-';
 
       var component = [
         input.format('HH:mm'),
         output.isValid() ? output.format('HH:mm') : '-',
-        duration,
+        diff.toString(),
         interval
       ];
 
