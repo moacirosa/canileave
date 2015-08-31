@@ -1,3 +1,6 @@
+/**
+ * @todo A label in header with yes/no green/red would be great
+ */
 var headerBoxBuilder = {
 
   build: function (blessed, screen) {

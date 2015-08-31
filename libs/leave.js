@@ -4,6 +4,9 @@ var moment = require('moment');
 var duration = require('moment-duration-format');
 var _ = require('lodash');
 
+/**
+ * @todo Might only receive hits from another module not fetch them
+ */
 var leave = {
 
   collectHits: function (hits, matchDay) {
@@ -28,6 +31,10 @@ var leave = {
       ['Input', 'Output', 'Duration', 'Interval']
     ];
 
+    /**
+     * @todo Implement interval
+     * @todo Add option to return flat data (or a presenter)
+     */
     hits.forEach(function (hit){
 
       var input = moment(hit.input),
