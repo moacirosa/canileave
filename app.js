@@ -16,8 +16,11 @@ screen.append(header.build(blessed, screen));
 var today = moment('2015-08-28 00:00:00'); // not REALLY today here yet
 var yesterday = today.clone().subtract(1, 'day');
 
-screen.append(day.build(today, 4));
-screen.append(day.build(yesterday, 18));
+var todayWidget = day.decorate(blessed).widget(today, 4);
+var yesterdayWidget = day.decorate(blessed).widget(yesterday, 18);
+
+screen.append(todayWidget);
+screen.append(yesterdayWidget);
 
 /**
  * Comment week section til I really have an implementation
