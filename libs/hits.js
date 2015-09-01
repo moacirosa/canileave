@@ -117,6 +117,32 @@ var io = [
 	},
 	{
 		input: new Date('2015-08-28 13:48'),
+		output: new Date('2015-08-28 18:48')
+	},
+	{
+		input: new Date('2015-08-31 09:29'),
+		output: new Date('2015-08-31 12:06')
+	},
+	{
+		input: new Date('2015-08-31 13:09'),
+		output: new Date('2015-08-31 16:44')
+	},
+	{
+		input: new Date('2015-08-31 17:25'),
+		output: new Date('2015-08-31 19:07')
+	},
+	{
+		input: new Date('2015-09-01 09:26'),
+		output: new Date('2015-09-01 12:57')
+	},
+	/*
+	{
+		input: new Date('2015-09-01 14:06'),
+		output: new Date('2015-09-01 18:41')
+	}
+	*/
+	{
+		input: new Date('2015-09-01 14:06'),
 		output: null
 	}
 ];

@@ -48,7 +48,7 @@ var leave = {
 
       var component = [
         input.format('HH:mm'),
-        output.isValid() ? output.format('HH:mm') : '-',
+        output.isValid() ? output.format('HH:mm') : null,
         diff.toString(),
         interval
       ];
@@ -60,6 +60,28 @@ var leave = {
   },
 
   /**
+   * @todo Missing test
+   */
+  arePairsIncomplete: function (flatHits) {
+
+    var outputs = _.pluck(flatHits, 1);
+
+    return _.some(outputs, null);
+  },
+
+  /**
+   * @todo Ugly :p
+   */
+  isLastPairIncomplete: function (flatHits) {
+
+    var lastHit = flatHits.pop();
+
+    flatHits.push(lastHit);
+
+    return lastHit[1] == null;
+  },
+
+  /**
    * @todo Add option to avoid headers
    */
   sumHitsDuration: function (flatHits) {
@@ -67,6 +89,21 @@ var leave = {
     var durations = _.pluck(flatHits, 2);
 
     return _.sum(durations);
+  },
+
+  fillLastOpenHitPair: function (flatHits) {
+
+    if (!this.isLastPairIncomplete(flatHits)) {
+      return flatHits;
+    }
+
+    var lastLine = flatHits.pop();
+
+    lastLine[1] = moment().format('HH:mm');
+
+    flatHits.push(lastLine);
+
+    return flatHits;
   },
 
   formatDuration: function (minutes) {

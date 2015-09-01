@@ -2,6 +2,7 @@ var moment = require('moment');
 var leave = require('../leave');
 var hits = require('../hits');
 var util = require('util');
+var _ = require('lodash');
 
 var dayBoxBuilder = {
 
@@ -31,9 +32,12 @@ var dayBoxBuilder = {
       height: 'shrink'
     });
 
+    var hitsInDay = leave.collectHits(hits, this.referenceDay);
+    var flatHits = leave.parseHits(hitsInDay);
+
     this.label()
-      .table()
-      .sum();
+      .table(flatHits)
+      .sum(flatHits);
 
     return this.parentBox;
   },
@@ -41,14 +45,6 @@ var dayBoxBuilder = {
   label: function () {
 
     var labelText = this.referenceDay.toNow(false);
-
-    if (this.referenceDay.isSame(this.today, 'day')) {
-      labelText = labelBox.setContent('TODAY');
-    }
-
-    if (this.referenceDay.isSame(this.yesterday, 'day')) {
-      labelText = labelBox.setContent('YESTERDAY');
-    }
 
     var labelBox = this.blessed.box({
       parent: this.parentBox,
@@ -61,13 +57,21 @@ var dayBoxBuilder = {
       width: 'shrink'
     });
 
+    if (this.referenceDay.isSame(this.today, 'day')) {
+      labelText = labelBox.setContent('TODAY');
+    }
+
+    if (this.referenceDay.isSame(this.yesterday, 'day')) {
+      labelText = labelBox.setContent('YESTERDAY');
+    }
+
     return this;
   },
 
-  table: function () {
+  table: function (flatHits) {
 
-    var hitsInDay = leave.collectHits(hits, this.referenceDay);
-    var content = leave.parseHits(hitsInDay);
+    //var hitsInDay = leave.collectHits(hits, this.referenceDay);
+    //var content = leave.parseHits(hitsInDay);
 
     var table = this.blessed.listtable({
       parent: this.parentBox,
@@ -105,15 +109,15 @@ var dayBoxBuilder = {
         ch: ' ',
         inverse: true
       },
-      data: content
+      data: flatHits
     });
 
     return this;
   },
 
-  sum: function () {
+  sum: function (flatHits) {
 
-    var sumToday = this.blessed.box({
+    var sumBox = this.blessed.box({
       parent: this.parentBox,
       content: '{green-fg}{bold}00:00{/bold}{/green-fg} hours worked today',
       height: 1,
@@ -123,8 +127,9 @@ var dayBoxBuilder = {
       tags: true
     });
 
-    var hitsInDay = leave.collectHits(hits, this.referenceDay);
-    var flatHits = leave.parseHits(hitsInDay);
+    //var hitsInDay = leave.collectHits(hits, this.referenceDay);
+    //var flatHits = leave.parseHits(hitsInDay);
+
     var sum = leave.sumHitsDuration(flatHits);
     var duration = leave.formatDuration(sum);
 
@@ -133,7 +138,31 @@ var dayBoxBuilder = {
       duration
     );
 
-    sumToday.setContent(freshContent);
+    sumBox.setContent(freshContent);
+
+    if (leave.isLastPairIncomplete(flatHits)) {      
+      this.sumAddListener(sumBox, flatHits);
+    }
+
+    return this;
+  },
+
+  /**
+   * @todo Improve... Code duplicated
+   */
+  sumAddListener: function (sumBox, flatHits) {
+
+    var flatHitsFilled = leave.fillLastOpenHitPair(flatHits);
+
+    var sum = leave.sumHitsDuration(flatHitsFilled);
+    var duration = leave.formatDuration(sum);
+
+    var freshContent = util.format(
+      '{green-fg}{bold}%s{/bold}{/green-fg} hours worked today', 
+      duration
+    );
+
+    sumBox.setContent(freshContent);
 
     return this;
   }
