@@ -3,18 +3,19 @@ var leave = require('../leave');
 var hits = require('../hits');
 var util = require('util');
 var _ = require('lodash');
+var blessed = require('blessed');
 
 var dayBoxBuilder = {
 
-  blessed: null,
+  screen: null,
   parentBox: null,
   referenceDay: null,
   today: null,
   yesterday: null,
 
-  decorate: function (blessed) {
+  decorate: function (screen) {
 
-    this.blessed = blessed;
+    this.screen = screen;
 
     return this;
   },
@@ -25,7 +26,7 @@ var dayBoxBuilder = {
     this.today = moment();
     this.yesterday = moment().subtract(1, 'day');
 
-    this.parentBox = this.blessed.box({
+    this.parentBox = blessed.box({
       top: boxTop,
       left: 'left+1',
       width: '40%',
@@ -35,9 +36,17 @@ var dayBoxBuilder = {
     var hitsInDay = leave.collectHits(hits, this.referenceDay);
     var flatHits = leave.parseHits(hitsInDay);
 
-    this.label()
-      .table(flatHits)
-      .sum(flatHits);
+    var label =  this.label();
+    var table = this.table(flatHits);
+    var sum = this.sum(flatHits);
+    var self = this;
+
+    if (leave.isLastPairIncomplete(flatHits)) {      
+
+      this.screen.on('updateDateTime', function (){
+        self.sumListener(flatHits, sum);
+      });
+    }
 
     return this.parentBox;
   },
@@ -46,7 +55,7 @@ var dayBoxBuilder = {
 
     var labelText = this.referenceDay.toNow(false);
 
-    var labelBox = this.blessed.box({
+    var labelBox = blessed.box({
       parent: this.parentBox,
       content: labelText,
       height: 1,
@@ -65,15 +74,12 @@ var dayBoxBuilder = {
       labelText = labelBox.setContent('YESTERDAY');
     }
 
-    return this;
+    return labelBox;
   },
 
   table: function (flatHits) {
 
-    //var hitsInDay = leave.collectHits(hits, this.referenceDay);
-    //var content = leave.parseHits(hitsInDay);
-
-    var table = this.blessed.listtable({
+    var tableBox = blessed.listtable({
       parent: this.parentBox,
       top: 'top+1',
       left: 'left',
@@ -112,12 +118,12 @@ var dayBoxBuilder = {
       data: flatHits
     });
 
-    return this;
+    return tableBox;
   },
 
   sum: function (flatHits) {
 
-    var sumBox = this.blessed.box({
+    var sumBox = blessed.box({
       parent: this.parentBox,
       content: '{green-fg}{bold}00:00{/bold}{/green-fg} hours worked today',
       height: 1,
@@ -127,11 +133,7 @@ var dayBoxBuilder = {
       tags: true
     });
 
-    //var hitsInDay = leave.collectHits(hits, this.referenceDay);
-    //var flatHits = leave.parseHits(hitsInDay);
-
-    var sum = leave.sumHitsDuration(flatHits);
-    var duration = leave.formatDuration(sum);
+    var duration = this.sumCalculate(flatHits);
 
     var freshContent = util.format(
       '{green-fg}{bold}%s{/bold}{/green-fg} hours worked today', 
@@ -140,22 +142,27 @@ var dayBoxBuilder = {
 
     sumBox.setContent(freshContent);
 
-    if (leave.isLastPairIncomplete(flatHits)) {      
-      this.sumAddListener(sumBox, flatHits);
-    }
+    return sumBox;
 
-    return this;
+  },
+
+  sumCalculate: function (flatHits) {
+
+    var sum = leave.sumHitsDuration(flatHits);
+    var duration = leave.formatDuration(sum);
+
+    return duration;
   },
 
   /**
    * @todo Improve... Code duplicated
    */
-  sumAddListener: function (sumBox, flatHits) {
+  sumListener: function (originalFlatHits, sumBox) {
 
+    var flatHits = _.cloneDeep(originalFlatHits);
     var flatHitsFilled = leave.fillLastOpenHitPair(flatHits);
 
-    var sum = leave.sumHitsDuration(flatHitsFilled);
-    var duration = leave.formatDuration(sum);
+    var duration = this.sumCalculate(flatHitsFilled);
 
     var freshContent = util.format(
       '{green-fg}{bold}%s{/bold}{/green-fg} hours worked today', 
@@ -163,8 +170,7 @@ var dayBoxBuilder = {
     );
 
     sumBox.setContent(freshContent);
-
-    return this;
+    this.screen.render();
   }
 };
 

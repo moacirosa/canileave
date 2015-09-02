@@ -16,8 +16,8 @@ screen.append(header.build(blessed, screen));
 var today = moment('2015-09-01 00:00:00'); // not REALLY today here yet
 var yesterday = today.clone().subtract(1, 'day');
 
-var todayWidget = day.decorate(blessed).widget(today, 4);
-var yesterdayWidget = day.decorate(blessed).widget(yesterday, 18);
+var todayWidget = day.decorate(screen).widget(today, 4);
+var yesterdayWidget = day.decorate(screen).widget(yesterday, 18);
 
 screen.append(todayWidget);
 screen.append(yesterdayWidget);
