@@ -25,7 +25,8 @@
     "blessed": "^0.1.80",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
-    "moment-duration-format": "^1.3.0"
+    "moment-duration-format": "^1.3.0",
+    "sprintf": "^0.1.5"
   },
   "devDependencies": {
     "gulp": "~3.8.0",

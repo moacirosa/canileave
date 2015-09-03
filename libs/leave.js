@@ -1,8 +1,9 @@
+var _ = require('lodash');
 var util = require('util');
 var hits = require('./hits');
 var moment = require('moment');
-var duration = require('moment-duration-format');
-var _ = require('lodash');
+var sprintf = require('sprintf');
+// var duration = require('moment-duration-format');
 
 /**
  * @todo Might only receive hits from another module not fetch them
@@ -102,30 +103,25 @@ var leave = {
    */
   sumHitsDuration: function (flatHits) {
 
-    var durations = _.pluck(flatHits, 2);
+    var sum = _.sum(flatHits, function (hit){
+      return hit.duration;
+    });
 
-    return _.sum(durations);
+    return sum;
   },
 
-  fillLastOpenHitPair: function (flatHits) {
+  formatDuration: function (seconds) {
 
-    if (!this.isLastPairIncomplete(flatHits)) {
-      return flatHits;
-    }
+    var length = moment.duration(seconds, 'seconds');
 
-    var lastLine = flatHits.pop();
+    var humanize = sprintf(
+      '%02d:%02d:%02d', 
+      length.hours(),
+      length.minutes(),
+      length.seconds()
+    );
 
-    lastLine[1] = moment().format('HH:mm');
-
-    flatHits.push(lastLine);
-
-    return flatHits;
-  },
-
-  formatDuration: function (minutes) {
-
-    return moment.duration(minutes, 'minutes')
-      .format('HH:mm', { trim: false });
+    return humanize;
   }
 };
 
