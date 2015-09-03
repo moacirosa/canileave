@@ -13,7 +13,7 @@ screen.title = 'Can I Leave?';
 
 screen.append(header.build(blessed, screen));
 
-var today = moment('2015-09-01 00:00:00'); // not REALLY today here yet
+var today = moment();
 var yesterday = today.clone().subtract(1, 'day');
 
 var todayWidget = day.decorate(screen).widget(today, 4);
