@@ -94,6 +94,11 @@ var leave = {
   },
 
   isLastPairIncomplete: function (flatHits) {
+    
+    if (_.isEmpty(flatHits)) {
+      return false;
+    }
+
     return _.last(flatHits).output === null;
   },
 
