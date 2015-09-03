@@ -53,7 +53,7 @@ var dayBoxBuilder = {
 
   label: function () {
 
-    var labelText = this.referenceDay.toNow(false);
+    var labelText = this.referenceDay.from(moment());
 
     var labelBox = blessed.box({
       parent: this.parentBox,
@@ -138,7 +138,7 @@ var dayBoxBuilder = {
     var duration = this.sumCalculate(flatHits);
 
     var freshContent = util.format(
-      '{green-fg}{bold}%s{/bold}{/green-fg} hours worked today', 
+      '{green-fg}{bold}%s{/bold}{/green-fg} hours worked', 
       duration
     );
 
@@ -148,6 +148,9 @@ var dayBoxBuilder = {
 
   },
 
+  /**
+   * @todo Seems to be deprecated... Bad API
+   */
   sumCalculate: function (flatHits) {
 
     var sum = leave.sumHitsDuration(flatHits);
