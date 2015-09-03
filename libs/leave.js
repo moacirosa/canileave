@@ -93,16 +93,8 @@ var leave = {
     return _.some(outputs, null);
   },
 
-  /**
-   * @todo Ugly :p
-   */
   isLastPairIncomplete: function (flatHits) {
-
-    var lastHit = flatHits.pop();
-
-    flatHits.push(lastHit);
-
-    return lastHit[1] == null;
+    return _.last(flatHits).output === null;
   },
 
   /**
