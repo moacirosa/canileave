@@ -3,7 +3,6 @@ var util = require('util');
 var hits = require('./hits');
 var moment = require('moment');
 var sprintf = require('sprintf');
-// var duration = require('moment-duration-format');
 
 /**
  * @todo Might only receive hits from another module not fetch them
