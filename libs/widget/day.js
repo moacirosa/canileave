@@ -159,23 +159,19 @@ var dayBoxBuilder = {
     return duration;
   },
 
-  /**
-   * @todo Improve... Code duplicated
-   */
-  sumListener: function (originalFlatHits, sumBox) {
+  sumListener: function (flatHits, sumBox) {
 
-    var flatHits = _.cloneDeep(originalFlatHits);
-    var flatHitsFilled = leave.fillLastOpenHitPair(flatHits);
+    var entrance = _.last(flatHits).input;
 
-    var duration = this.sumCalculate(flatHitsFilled);
+    var seconds = moment().diff(entrance, 'seconds');
+    var humanize = leave.formatDuration(seconds);
 
     var freshContent = util.format(
-      '{green-fg}{bold}%s{/bold}{/green-fg} hours worked today', 
-      duration
+      '{green-fg}{bold}%s{/bold}{/green-fg} hours worked', 
+      humanize
     );
 
     sumBox.setContent(freshContent);
-    this.screen.render();
   }
 };
 
