@@ -1,4 +1,3 @@
-/*
 var io = [
 	{
 		input: new Date('2015-08-17 09:09'),
@@ -6,14 +5,8 @@ var io = [
 	},
 	{
 		input: new Date('2015-08-17 14:07'),
-		output: null
-	}
-];
-
-*/
-
-/*
-var io = [
+		output: new Date('2015-08-17 18:45')
+	},
 	{
 		input: new Date('2015-08-18 09:13'),
 		output: new Date('2015-08-18 12:33')
@@ -24,53 +17,8 @@ var io = [
 	},
 	{
 		input: new Date('2015-08-19 09:21'),
-		output: null
-	}
-];
-*/
-
-/*
-var io = [
-	{
-		input: new Date('2015-08-19 09:21'),
-		output: new Date('2015-08-19 12:37')
-	},
-	{
-		input: new Date('2015-08-19 13:36'),
 		output: new Date('2015-08-19 18:21')
-	}
-];
-*/
-
-/*
-var io = [
-	{
-		input: new Date('2015-08-20 09:31'),
-		output: new Date('2015-08-20 09:32')
 	},
-	{
-		input: new Date('2015-08-20 09:32'),
-		output: new Date('2015-08-20 12:02')
-	},
-	{
-		input: new Date('2015-08-20 12:49'),
-		output: new Date('2015-08-20 18:18')
-	}
-];
-*/
-
-/*
-
-date, input, output
-2015-08-26, 07:30, 13:35
-2015-08-26, 14:27, 17:26
-2015-08-27, 07:30, 13:35
-2015-08-27, 14:27, 
-
-
-*/
-
-var io = [
 	{
 		input: new Date('2015-08-19 09:21'),
 		output: new Date('2015-08-19 12:37')
@@ -135,15 +83,21 @@ var io = [
 		input: new Date('2015-09-01 09:26'),
 		output: new Date('2015-09-01 12:57')
 	},
-	/*
 	{
 		input: new Date('2015-09-01 14:06'),
 		output: new Date('2015-09-01 18:41')
-	}
-	*/
+	},
 	{
-		input: new Date('2015-09-01 14:06'),
-		output: null
+		input: new Date('2015-09-02 09:34'),
+		output: new Date('2015-09-02 12:14')
+	},
+	{
+		input: new Date('2015-09-02 13:05'),
+		output: new Date('2015-09-02 18:53')
+	},
+	{
+		input: new Date('2015-09-03 09:36'),
+		output: new Date('2015-09-03 12:58')
 	}
 ];
 
