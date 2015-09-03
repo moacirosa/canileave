@@ -27,31 +27,32 @@ var leave = {
 
   parseHits: function (hits) {
 
-    var flatHits = [
-      ['Input', 'Output', 'Duration', 'Interval']
-    ];
+    var flatHits = [];
 
     /**
      * @todo Implement interval
-     * @todo Add option to return flat data (or a presenter)
      */
     hits.forEach(function (hit){
 
       var input = moment(hit.input),
-        output = moment(hit.output);
+          output = moment(hit.output),
+          duration = null,
+          interval = null;
 
-      var outputReferer = output.isValid() ? output : moment();
+      if (!output.isValid()) {
+        output = null;
+      }
 
-      var diff = outputReferer.diff(input, 'minutes');
-      
-      var interval = '-';
+      if (output) {
+        duration = output.diff(input, 'seconds');
+      }
 
-      var component = [
-        input.format('HH:mm'),
-        output.isValid() ? output.format('HH:mm') : null,
-        diff.toString(),
-        interval
-      ];
+      var component = {
+        "input": input,
+        "output": output,
+        "duration": duration,
+        "interval": interval
+      }
 
       flatHits.push(component);
     });
@@ -59,8 +60,31 @@ var leave = {
     return flatHits;
   },
 
+  presentHits: function (flatHits) {
+
+    var preparedHits = [
+      ['Input', 'Output', 'Duration', 'Interval']
+    ];
+
+    var self = this;
+
+    flatHits.forEach(function (hit){
+
+      var preparedComponent = [
+        hit.input.format('HH:mm'),
+        hit.output ? hit.output.format('HH:mm') : '-',
+        hit.duration ? self.formatDuration(hit.duration) : '-',
+        '-'
+      ];
+
+      preparedHits.push(preparedComponent);
+    });
+
+    return preparedHits;
+  },
+
   /**
-   * @todo Missing test
+   * @todo Check if still useful and test it (flatHits has changed)
    */
   arePairsIncomplete: function (flatHits) {
 

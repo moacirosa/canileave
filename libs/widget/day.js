@@ -79,6 +79,8 @@ var dayBoxBuilder = {
 
   table: function (flatHits) {
 
+    var preparedHits = leave.presentHits(flatHits);
+
     var tableBox = blessed.listtable({
       parent: this.parentBox,
       top: 'top+1',
@@ -115,7 +117,7 @@ var dayBoxBuilder = {
         ch: ' ',
         inverse: true
       },
-      data: flatHits
+      data: preparedHits
     });
 
     return tableBox;
