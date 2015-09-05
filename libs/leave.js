@@ -120,10 +120,22 @@ var leave = {
 
     var humanize = sprintf(
       '%02d:%02d:%02d', 
+      length.days(),
       length.hours(),
       length.minutes(),
       length.seconds()
     );
+
+    if (length.days() > 0) {
+      
+      var humanize = sprintf(
+        '%02d day(s) %02d:%02d:%02d', 
+        length.days(),
+        length.hours(),
+        length.minutes(),
+        length.seconds()
+      );      
+    }
 
     return humanize;
   }
