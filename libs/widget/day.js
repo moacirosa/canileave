@@ -148,12 +148,14 @@ var dayBoxBuilder = {
 
   },
 
-  /**
-   * @todo Seems to be deprecated... Bad API
-   */
-  sumCalculate: function (flatHits) {
+  sumCalculate: function (flatHits, raw) {
 
     var sum = leave.sumHitsDuration(flatHits);
+
+    if (raw) {
+      return sum;
+    }
+
     var duration = leave.formatDuration(sum);
 
     return duration;
@@ -162,9 +164,11 @@ var dayBoxBuilder = {
   sumListener: function (flatHits, sumBox) {
 
     var entrance = _.last(flatHits).input;
+    var accumulated = this.sumCalculate(flatHits, true);
 
     var seconds = moment().diff(entrance, 'seconds');
-    var humanize = leave.formatDuration(seconds);
+
+    var humanize = leave.formatDuration(seconds + accumulated);
 
     var freshContent = util.format(
       '{green-fg}{bold}%s{/bold}{/green-fg} hours worked', 
