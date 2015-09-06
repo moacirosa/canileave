@@ -1,6 +1,6 @@
 {
   "name": "canileave",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Yet another dummy terminal application for work tracking",
   "bin": "./app.js",
   "preferGlobal": true,
