@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var blessed = require('blessed');
 var moment = require('moment');
 var header = require('./libs/widget/header');
