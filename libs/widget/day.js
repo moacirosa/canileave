@@ -20,7 +20,7 @@ var dayBoxBuilder = {
     return this;
   },
   
-  widget: function (day, boxTop) {
+  widget: function (flatHits, day, boxTop) {
 
     this.referenceDay = moment(day);
     this.today = moment();
@@ -33,8 +33,8 @@ var dayBoxBuilder = {
       height: 'shrink'
     });
 
-    var hitsInDay = leave.collectHits(hits, this.referenceDay);
-    var flatHits = leave.parseHits(hitsInDay);
+    //var hitsInDay = leave.collectHits(hits, this.referenceDay);
+    //var flatHits = leave.parseHits(hitsInDay);
 
     var label =  this.label();
     var table = this.table(flatHits);

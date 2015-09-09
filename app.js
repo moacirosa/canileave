@@ -2,8 +2,11 @@
 
 var blessed = require('blessed');
 var moment = require('moment');
+var leave = require('./libs/leave');
 var header = require('./libs/widget/header');
+var csv = require('csv');
 // var week = require('./libs/partials/week');
+var fs = require('fs');
 
 var day = require('./libs/widget/day');
 
@@ -18,8 +21,25 @@ screen.append(header.build(blessed, screen));
 var today = moment();
 var yesterday = today.clone().subtract(1, 'day');
 
-var todayWidget = day.decorate(screen).widget(today, 4);
-var yesterdayWidget = day.decorate(screen).widget(yesterday, 18);
+
+var fileContent = fs.readFileSync(process.argv[2]);
+
+csv.parse(fileContent.toString(), function (err, output){
+  console.log(output);
+});
+
+var hits = [];  // preparing to read data from csv
+
+var hitsToday = leave.collectHits(hits, today);
+var flatHitsToday = leave.parseHits(hitsToday);
+
+var hitsYesterday = leave.collectHits(hits, yesterday);
+var flatHitsYesterday = leave.parseHits(hitsYesterday);
+
+
+
+var todayWidget = day.decorate(screen).widget(hitsToday, today, 4);
+var yesterdayWidget = day.decorate(screen).widget(hitsYesterday, yesterday, 18);
 
 screen.append(todayWidget);
 screen.append(yesterdayWidget);

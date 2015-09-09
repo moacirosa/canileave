@@ -9,8 +9,8 @@ var sprintf = require('sprintf');
  */
 var leave = {
 
-  collectHits: function (hits, matchDay) {
-
+  filteredHits: function (hits, matchDay) {
+    
     var filteredHits = [];
 
     hits.forEach(function (hit){
@@ -138,7 +138,15 @@ var leave = {
     }
 
     return humanize;
-  }
+  },
+
+  /**
+   * @deprecated
+   */
+  collectHits: function (hits, matchDay) {
+
+    return leave.filteredHits(hits, matchDay);
+  },
 };
 
 module.exports = leave;
